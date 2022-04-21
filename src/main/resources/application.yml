@@ -1,0 +1,15 @@
+server:
+  port: 8099
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://10.38.154.14:3306/db_monitor?useUnicode=true&characterEncoding=utf8&characterSetResults=UTF-8&zeroDateTimeBehavior=CONVERT_TO_NULL&allowMultiQueries=true&transformedBitIsBoolean=true&serverTimezone=PRC
+    username: db_monitor_staging
+    password: db_monitor_staging
+    druid:
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 60000
+
