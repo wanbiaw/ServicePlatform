@@ -16,4 +16,12 @@ mybatis:
   type-aliases-package: com.xiaomi.xiaoai.servicefunc
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-
+logging:
+  file:
+    name: ServicePlatform.log
+    path: /
+  level:
+    root: debug
+  pattern:
+    console: '%d{yyyy-MM-dd} [%thread] %-5level %logger{50} - %msg%n'
+    file: '%d{yyyy-MM-dd HH:mm:ss.SSS} >>> [%thread] >>> %-5level >>> %logger{50} >>> %msg%n'

@@ -13,4 +13,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class TbMonitorDashboardDaoImpl extends TbMonitorDashboardBaseDao implements TbMonitorDashboardDao {
+
+    public void getMonitorDashboard(){
+
+    }
 }
