@@ -3,6 +3,9 @@ package com.xiaomi.xiaoai.servicefunc.dao.impl;
 import cn.org.atool.fluent.mybatis.If;
 import com.xiaomi.xiaoai.servicefunc.dao.base.TbDeviceBaseDao;
 import com.xiaomi.xiaoai.servicefunc.dao.intf.TbDeviceDao;
+import com.xiaomi.xiaoai.servicefunc.entity.TbDeviceEntity;
+import com.xiaomi.xiaoai.servicefunc.helper.TbDeviceSegment;
+import com.xiaomi.xiaoai.servicefunc.mapper.TbDeviceMapper;
 import com.xiaomi.xiaoai.servicefunc.wrapper.TbDeviceQuery;
 import com.xiaomi.xiaoai.servicefunc.wrapper.TbDeviceUpdate;
 import org.springframework.stereotype.Repository;
@@ -140,5 +143,12 @@ public class TbDeviceDaoImpl extends TbDeviceBaseDao implements TbDeviceDao {
                 .set.category().is(category, If::notNull).end()
                 .where.applyFunc("1=1")
                 .and.id().in(ids,If::notNull).end();
+    }
+
+    public TbDeviceQuery getDevicesName(Integer isMonitor,Integer prodId){
+        return new TbDeviceQuery()
+                .select.app().end()
+                .where.isMonitor().eq(isMonitor,If::notNull)
+                .prodId().eq(prodId,If::notNull).end();
     }
 }

@@ -1,17 +1,18 @@
 package com.xiaomi.xiaoai.servicefunc.Controller;
 
+import com.xiaomi.xiaoai.servicefunc.ExceptionHandler.DefineException;
 import com.xiaomi.xiaoai.servicefunc.dao.impl.TbDeviceDaoImpl;
 import com.xiaomi.xiaoai.servicefunc.entity.TbDeviceEntity;
 import com.xiaomi.xiaoai.servicefunc.wrapper.TbDeviceQuery;
 import com.xiaomi.xiaoai.servicefunc.wrapper.TbDeviceUpdate;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -22,10 +23,12 @@ public class DeviceController {
     private TbDeviceDaoImpl tbDeviceDao;
 
     @RequestMapping(value = "/getDevices",method = RequestMethod.GET)
-    public List<TbDeviceEntity> getDevices(){
+    public List<TbDeviceEntity> getDevices() throws Exception {
         TbDeviceQuery devices = tbDeviceDao.getDevices(null, 1, null, null, null, null,
                 null, null, null, null, null,"Device/TV","Large",0,2);
-        log.info("print");
+        if(true){
+            throw new DefineException(100,"holy shit!");
+        }
         return tbDeviceDao.listEntity(devices);
     }
 
@@ -48,6 +51,12 @@ public class DeviceController {
                 null, null, null, null, null, null, null, null,
                 null, null);
         return tbDeviceDao.updateBy(updateDevice);
+    }
+
+    @RequestMapping(value = "/getDevicesName",method = RequestMethod.GET)
+    public List getDevicesName(){
+        TbDeviceQuery devicesName = tbDeviceDao.getDevicesName(1, 1);
+        return tbDeviceDao.listMaps(devicesName);
     }
 }
 
