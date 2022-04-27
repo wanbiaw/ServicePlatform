@@ -1,62 +1,62 @@
 package com.xiaomi.xiaoai.servicefunc.Controller;
 
-import com.xiaomi.xiaoai.servicefunc.ExceptionHandler.DefineException;
-import com.xiaomi.xiaoai.servicefunc.dao.impl.TbDeviceDaoImpl;
+import com.xiaomi.xiaoai.servicefunc.Service.DeviceService;
 import com.xiaomi.xiaoai.servicefunc.entity.TbDeviceEntity;
-import com.xiaomi.xiaoai.servicefunc.wrapper.TbDeviceQuery;
-import com.xiaomi.xiaoai.servicefunc.wrapper.TbDeviceUpdate;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController
+@CrossOrigin
 @RequestMapping("/test")
 public class DeviceController {
 
     @Resource
-    private TbDeviceDaoImpl tbDeviceDao;
+    private DeviceService deviceService;
 
-    @RequestMapping(value = "/getDevices",method = RequestMethod.GET)
-    public List<TbDeviceEntity> getDevices() throws Exception {
-        TbDeviceQuery devices = tbDeviceDao.getDevices(null, 1, null, null, null, null,
-                null, null, null, null, null,"Device/TV","Large",0,2);
-        if(true){
-            throw new DefineException(100,"holy shit!");
-        }
-        return tbDeviceDao.listEntity(devices);
+    @RequestMapping(value = "/getDevices",method = RequestMethod.POST)
+    public List<TbDeviceEntity> getDevices(
+            @RequestParam(value = "prodId",required = false) Integer prodId,
+            @RequestParam(value = "ids[]",required = false) Integer[] ids,
+            @RequestParam(value = "appId",required = false) String appId,
+            @RequestParam(value = "app",required = false) String app,
+            @RequestParam(value = "info",required = false) String info,
+            @RequestParam(value = "domains",required = false) String domains,
+            @RequestParam(value = "type[]",required = false) Integer[] type,
+            @RequestParam(value = "creatorId",required = false) Integer creatorId,
+            @RequestParam(value = "isDelete",required = false) Integer isDelete,
+            @RequestParam(value = "version",required = false) String version,
+            @RequestParam(value = "category",required = false) String category
+    ){
+        return deviceService.getDevices(ids, prodId, appId, app, info, domains,
+                type, creatorId, isDelete, version, null, category, null,0,5);
     }
 
     @RequestMapping(value = "/getDevicesNum",method = RequestMethod.GET)
     public Integer getDevicesNum(){
-        TbDeviceQuery devicesNum = tbDeviceDao.getDevicesNum(null, 1, null, null, null, null,
+        return deviceService.getDevicesNum(null, 1, null, null, null, null,
                 null, null, null, null, null, null, null);
-        return tbDeviceDao.count(devicesNum);
     }
 
     @RequestMapping(value = "/deleteDevice",method = RequestMethod.GET)
     public Integer deleteDevice(){
-        TbDeviceQuery deleteDevice = tbDeviceDao.deleteDevice(new Integer[]{412}, 1, null, null);
-        return tbDeviceDao.deleteBy(deleteDevice);
+        return deviceService.deleteDevice(new Integer[]{412}, 1, null, null);
     }
 
     @RequestMapping(value = "/updateDevice",method = RequestMethod.GET)
     public Integer updateDevice(){
-        TbDeviceUpdate updateDevice = tbDeviceDao.updateDevice(new Integer[]{412}, 1, null, null, null, null,
-                null, null, null, null, null, null, null, null,
-                null, null);
-        return tbDeviceDao.updateBy(updateDevice);
+        return deviceService.updateDevice(
+                new Integer[]{412}, 1, null, null, null, null, null,
+                null, null, null, null, null, null,
+                null, null, null);
     }
 
     @RequestMapping(value = "/getDevicesName",method = RequestMethod.GET)
-    public List getDevicesName(){
-        TbDeviceQuery devicesName = tbDeviceDao.getDevicesName(1, 1);
-        return tbDeviceDao.listMaps(devicesName);
+    public List<String> getDevicesName(){
+        return deviceService.getDevicesName(1,1);
     }
 }
 

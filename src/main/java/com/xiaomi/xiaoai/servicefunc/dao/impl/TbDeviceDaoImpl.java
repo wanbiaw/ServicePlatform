@@ -20,8 +20,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class TbDeviceDaoImpl extends TbDeviceBaseDao implements TbDeviceDao {
 
-
-
     /**
      * @Author wangxiang10
      * @Description  获取设备信息
