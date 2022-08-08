@@ -212,6 +212,11 @@ public class TbCaseTestEntity extends RichEntity {
 
   /**
    */
+  @TableField("run_env")
+  private String runEnv;
+
+  /**
+   */
   @TableField("section_id")
   private Long sectionId;
 

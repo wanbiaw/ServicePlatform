@@ -17,6 +17,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Resource
     private TbDeviceDaoImpl tbDeviceDao;
+
     @Override
     public List<TbDeviceEntity> getDevices(
             Integer[] ids, Integer prodId, String appId, String app, String info, String domains,

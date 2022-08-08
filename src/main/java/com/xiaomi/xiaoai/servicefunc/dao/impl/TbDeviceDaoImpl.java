@@ -27,13 +27,13 @@ public class TbDeviceDaoImpl extends TbDeviceBaseDao implements TbDeviceDao {
      * @Param [ids, prodId, appId, app, info, domain, type, creatorId, isDelete, version, isMonitor, category, screen, start, end]
      * @return com.xiaomi.xiaoai.servicefunc.wrapper.TbDeviceQuery
      **/
+    @Override
     public TbDeviceQuery getDevices(
-            Integer[] ids, Integer prodId,
-            String appId, String app, String info,
-            String domains, Integer[] type, Integer creatorId,
-            Integer isDelete, String version, Integer isMonitor,
-            String category,String screen,Integer start,Integer end
-            ){
+            Integer[] ids, Integer prodId, String appId, String app, String info,
+            String domains, Integer[] type, Integer creatorId, Integer isDelete,
+            String version, Integer isMonitor, String category, String screen,
+            Integer start, Integer end
+    ){
         return new TbDeviceQuery()
                 .where.applyFunc("1=1")
                 .and.id().in(ids,If::notNull)
@@ -51,63 +51,7 @@ public class TbDeviceDaoImpl extends TbDeviceBaseDao implements TbDeviceDao {
                 .and.apply("json_extract(category,'$.screen')").like(screen,If::notNull).end()
                 .orderBy.id().asc().end()
                 .limit(start,end);
-    }
-
-
-
-    /**
-     * @Author wangxiang10
-     * @Description  获取设备数量
-     * @Date 16:57 2022/4/25
-     * @Param [ids, prodId, appId, app, info, domain, type, creatorId, isDelete, version, isMonitor, category, screen]
-     * @return com.xiaomi.xiaoai.servicefunc.wrapper.TbDeviceQuery
-     **/
-    public TbDeviceQuery getDevicesNum(
-            Integer[] ids, Integer prodId,
-            String appId, String app, String info,
-            String domains, Integer[] type, Integer creatorId,
-            Integer isDelete, String version, Integer isMonitor,
-            String category,String screen
-    ){
-        return new TbDeviceQuery()
-                .where.applyFunc("1=1")
-                .and.id().in(ids,If::notNull)
-                .and.prodId().eq(prodId, If::notNull)
-                .and.appId().eq(appId, If::notNull)
-                .and.app().eq(app, If::notNull)
-                .and.info().eq(info, If::notNull)
-                .and.domains().eq(domains, If::notNull)
-                .and.type().in(type, If::notNull)
-                .and.creatorId().eq(creatorId, If::notNull)
-                .and.isDelete().eq(isDelete, If::notNull)
-                .and.version().eq(version, If::notNull)
-                .and.isMonitor().eq(isMonitor, If::notNull)
-                .and.apply("json_extract(category,'$.category')").like(category,If::notNull)
-                .and.apply("json_extract(category,'$.screen')").like(screen,If::notNull).end();
-    }
-
-
-
-    /**
-     * @Author wangxiang10
-     * @Description  删除设备信息
-     * @Date 17:09 2022/4/25
-     * @Param [ids, prodId, appId, isDelete]
-     * @return com.xiaomi.xiaoai.servicefunc.wrapper.TbDeviceQuery
-     **/
-    public TbDeviceQuery deleteDevice(
-            Integer[] ids, Integer prodId,
-            String appId, Integer isDelete
-    ){
-        return new TbDeviceQuery()
-                .where.applyFunc("1=1")
-                .and.id().in(ids,If::notNull)
-                .and.prodId().eq(prodId,If::notNull)
-                .and.appId().eq(appId,If::notNull)
-                .and.isDelete().eq(isDelete,If::notNull).end();
-    }
-
-
+}
 
     /**
      * @Author wangxiang10
@@ -116,12 +60,12 @@ public class TbDeviceDaoImpl extends TbDeviceBaseDao implements TbDeviceDao {
      * @Param [ids, prodId, appId, app, info, type, version, domains, params, conf, updater_name, isDelete, isMonitor, updated_at, deleted_at, category]
      * @return com.xiaomi.xiaoai.servicefunc.wrapper.TbDeviceUpdate
      **/
+    @Override
     public TbDeviceUpdate updateDevice(
-            Integer[] ids, Integer prodId, String appId, String app,
-            String info, Integer type, String version,
-            String domains, String params, String conf,
-            String updater_name, Integer isDelete, Integer isMonitor,
-            String updated_at, String deleted_at, String category
+            Integer[] ids, Integer prodId, String appId, String app, String info, Integer type,
+            String version, String domains, String params, String conf, String updater_name,
+            Integer isDelete, Integer isMonitor, String updated_at, String deleted_at,
+            String category
     ){
         return new TbDeviceUpdate()
                 .set.prodId().is(prodId, If::notNull)
@@ -143,7 +87,57 @@ public class TbDeviceDaoImpl extends TbDeviceBaseDao implements TbDeviceDao {
                 .and.id().in(ids,If::notNull).end();
     }
 
-    public TbDeviceQuery getDevicesName(Integer isMonitor,Integer prodId){
+    /**
+     * @Author wangxiang10
+     * @Description  删除设备信息
+     * @Date 17:09 2022/4/25
+     * @Param [ids, prodId, appId, isDelete]
+     * @return com.xiaomi.xiaoai.servicefunc.wrapper.TbDeviceQuery
+     **/
+    @Override
+    public TbDeviceQuery deleteDevice(
+            Integer[] ids, Integer prodId, String appId, Integer isDelete
+    ){
+        return new TbDeviceQuery()
+                .where.applyFunc("1=1")
+                .and.id().in(ids,If::notNull)
+                .and.prodId().eq(prodId,If::notNull)
+                .and.appId().eq(appId,If::notNull)
+                .and.isDelete().eq(isDelete,If::notNull).end();
+    }
+
+    /**
+     * @Author wangxiang10
+     * @Description  获取设备数量
+     * @Date 16:57 2022/4/25
+     * @Param [ids, prodId, appId, app, info, domain, type, creatorId, isDelete, version, isMonitor, category, screen]
+     * @return com.xiaomi.xiaoai.servicefunc.wrapper.TbDeviceQuery
+     **/
+    @Override
+    public TbDeviceQuery getDevicesNum(
+            Integer[] ids, Integer prodId, String appId, String app, String info, String domains,
+            Integer[] type, Integer creatorId, Integer isDelete, String version, Integer isMonitor,
+            String category, String screen
+    ){
+        return new TbDeviceQuery()
+                .where.applyFunc("1=1")
+                .and.id().in(ids,If::notNull)
+                .and.prodId().eq(prodId, If::notNull)
+                .and.appId().eq(appId, If::notNull)
+                .and.app().eq(app, If::notNull)
+                .and.info().eq(info, If::notNull)
+                .and.domains().eq(domains, If::notNull)
+                .and.type().in(type, If::notNull)
+                .and.creatorId().eq(creatorId, If::notNull)
+                .and.isDelete().eq(isDelete, If::notNull)
+                .and.version().eq(version, If::notNull)
+                .and.isMonitor().eq(isMonitor, If::notNull)
+                .and.apply("json_extract(category,'$.category')").like(category,If::notNull)
+                .and.apply("json_extract(category,'$.screen')").like(screen,If::notNull).end();
+    }
+
+    @Override
+    public TbDeviceQuery getDevicesName(Integer isMonitor, Integer prodId) {
         return new TbDeviceQuery()
                 .select.app().end()
                 .where.isMonitor().eq(isMonitor,If::notNull)

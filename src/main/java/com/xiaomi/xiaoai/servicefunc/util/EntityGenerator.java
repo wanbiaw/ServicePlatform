@@ -19,7 +19,9 @@ public class EntityGenerator {
             srcDir = "src/main/java",
             basePack = "com.xiaomi.xiaoai.servicefunc",
             daoDir = "src/main/java",
-            tables = {@Table(value = {"tb_result","tb_monitor_dashboard","tb_plan","tb_device","tb_case_test"})}
+            tables = {@Table(value = {
+                    "tb_result","tb_monitor_dashboard","tb_plan","tb_device",
+                    "tb_case_test","tb_intent","tb_mock"})}
     )
 
     static class Empty{
