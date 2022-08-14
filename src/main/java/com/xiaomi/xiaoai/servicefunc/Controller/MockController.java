@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -27,14 +28,18 @@ public class MockController {
 
     @RequestMapping(value = "/getHttpMocks",method = RequestMethod.GET)
     public List<TbMockEntity> getMocks(
-            @RequestParam(value = "ids[]",required = false) Integer[] mockIds,
+            @RequestParam(value = "ids",required = false) String mockIds,
             @RequestParam(value = "name",required = false) String mockName,
             @RequestParam(value = "url",required = false) String mockUrl,
             @RequestParam(value = "requestMethod",required = false) String mockRequestMethod,
             @RequestParam(value = "createdAt",required = false) Date createdAt,
             @RequestParam(value = "updatedAt",required = false) Date updatedAt
     ) throws ParseException {
-        return mockService.getHttpMocks(mockIds, mockName, mockUrl, mockRequestMethod,
+        Integer[] ids = new Integer[0];
+        if (mockIds!=null){
+            ids = Arrays.stream(mockIds.split(",")).mapToInt(Integer::parseInt).boxed().toArray(Integer[]::new);
+        }
+        return mockService.getHttpMocks(mockIds==null?null:ids, mockName, mockUrl, mockRequestMethod,
                 createdAt == null?sdf.parse("1970-01-01"):createdAt,
                 updatedAt == null?sdf.parse("1970-01-01"):updatedAt);
     }
@@ -47,7 +52,7 @@ public class MockController {
         return rr.responseResult(ErrorEnum.SUCCESS,true,"Mock更新成功！");
     }
 
-    @RequestMapping(value = "/delHttpMock",method = RequestMethod.GET)
+    @RequestMapping(value = "/delHttpMock",method = RequestMethod.POST)
     public ResponseResult deleteMock(
         @RequestBody Integer[] ids
     ){
