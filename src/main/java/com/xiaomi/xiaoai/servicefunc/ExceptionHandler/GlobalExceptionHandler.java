@@ -17,9 +17,9 @@ public class GlobalExceptionHandler {
      * @return com.xiaomi.xiaoai.servicefunc.ExceptionHandler.ExceptionResult
      **/
     @ExceptionHandler(value = Exception.class)
-    public ExceptionResult exceptionHandler(Exception e){
-        logger.info("Exception ==>" + e.getMessage());
-        return ExceptionResult.commonError(ErrorEnum.INTERNAL_SERVER_ERROR);
+    public ResponseResult exceptionHandler(Exception e){
+        logger.info("Exception ================>" + e.getMessage());
+        return ResponseResult.commonError(ErrorEnum.INTERNAL_SERVER_ERROR,e);
     }
 
     /**
@@ -30,8 +30,8 @@ public class GlobalExceptionHandler {
      * @return com.xiaomi.xiaoai.servicefunc.ExceptionHandler.ExceptionResult
      **/
     @ExceptionHandler(value = DefineException.class)
-    public ExceptionResult defineExceptionHandler(DefineException defineException){
+    public ResponseResult defineExceptionHandler(DefineException defineException){
         logger.info("DefineException ==>" + defineException.getErrorMsg());
-        return ExceptionResult.myDefineError(defineException);
+        return ResponseResult.myDefineError(defineException);
     }
 }

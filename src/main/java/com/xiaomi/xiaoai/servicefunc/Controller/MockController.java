@@ -1,19 +1,17 @@
 package com.xiaomi.xiaoai.servicefunc.Controller;
 
+import com.xiaomi.xiaoai.servicefunc.ExceptionHandler.ErrorEnum;
+import com.xiaomi.xiaoai.servicefunc.ExceptionHandler.ResponseResult;
 import com.xiaomi.xiaoai.servicefunc.Service.MockService;
 import com.xiaomi.xiaoai.servicefunc.entity.TbMockEntity;
-import lombok.Value;
+import com.xiaomi.xiaoai.servicefunc.util.ObModel;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.thymeleaf.expression.Ids;
 
 import javax.annotation.Resource;
-import javax.swing.text.DateFormatter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @RestController
@@ -23,7 +21,8 @@ public class MockController {
 
     @Resource
     private MockService mockService;
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    private ResponseResult<Object> rr = new ResponseResult<>();
 
 
     @RequestMapping(value = "/getHttpMocks",method = RequestMethod.GET)
@@ -38,5 +37,21 @@ public class MockController {
         return mockService.getHttpMocks(mockIds, mockName, mockUrl, mockRequestMethod,
                 createdAt == null?sdf.parse("1970-01-01"):createdAt,
                 updatedAt == null?sdf.parse("1970-01-01"):updatedAt);
+    }
+
+    @RequestMapping(value = "/saveHttpMock",method = RequestMethod.POST)
+    public ResponseResult saveMock(
+        @RequestBody TbMockEntity mockEntity
+    ){
+        mockService.saveHttpMocks(mockEntity);
+        return rr.responseResult(ErrorEnum.SUCCESS,true,"Mock更新成功！");
+    }
+
+    @RequestMapping(value = "/delHttpMock",method = RequestMethod.GET)
+    public ResponseResult deleteMock(
+        @RequestBody Integer[] ids
+    ){
+
+        return null;
     }
 }

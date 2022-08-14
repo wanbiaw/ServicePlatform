@@ -3,7 +3,7 @@ package com.xiaomi.xiaoai.servicefunc.ExceptionHandler;
 import lombok.Data;
 
 @Data
-public class ExceptionResult<T> {
+public class ResponseResult<T> {
     //成功状态
     private Boolean success;
     //状态码
@@ -13,11 +13,11 @@ public class ExceptionResult<T> {
     //数据
     private T data;
 
-    public ExceptionResult(){
+    public ResponseResult(){
     }
 
     //自定义返回结果的构造方法
-    public ExceptionResult(Boolean success,Integer code, String msg,T data) {
+    public ResponseResult(Boolean success, Integer code, String msg, T data) {
         this.success = success;
         this.code = code;
         this.msg = msg;
@@ -31,12 +31,12 @@ public class ExceptionResult<T> {
      * @Param [errorEnum]
      * @return com.xiaomi.xiaoai.servicefunc.ExceptionHandler.ExceptionResult
      **/
-    public static ExceptionResult commonError(ErrorEnum errorEnum){
-        ExceptionResult result = new ExceptionResult();
+    public static ResponseResult commonError(ErrorEnum errorEnum,Exception e){
+        ResponseResult result = new ResponseResult();
         result.setSuccess(Boolean.FALSE);
         result.setCode(errorEnum.getErrorCode());
         result.setMsg(errorEnum.getErrorMsg());
-        result.setData(null);
+        result.setData(e.getMessage());
         return result;
     }
 
@@ -47,12 +47,29 @@ public class ExceptionResult<T> {
      * @Param [defineException]
      * @return com.xiaomi.xiaoai.servicefunc.ExceptionHandler.ExceptionResult
      **/
-    public static ExceptionResult myDefineError(DefineException defineException){
-        ExceptionResult result = new ExceptionResult();
+    public static ResponseResult myDefineError(DefineException defineException){
+        ResponseResult result = new ResponseResult();
         result.setSuccess(Boolean.FALSE);
         result.setCode(defineException.getErrorCode());
         result.setMsg(defineException.getErrorMsg());
         result.setData(null);
+        return result;
+    }
+
+
+    /**
+     * @Author wangxiang10
+     * @Description  封装api请求的返回结果
+     * @Date 16:02 2022/5/17
+     * @Param [errorEnum]
+     * @return com.xiaomi.xiaoai.servicefunc.ExceptionHandler.ExceptionResult
+     **/
+    public ResponseResult responseResult(ErrorEnum statusEnum,Boolean success, Object data){
+        ResponseResult result = new ResponseResult();
+        result.setSuccess(success);
+        result.setCode(statusEnum.getErrorCode());
+        result.setMsg(statusEnum.getErrorMsg());
+        result.setData(data);
         return result;
     }
 }

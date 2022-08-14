@@ -3,6 +3,8 @@ package com.xiaomi.xiaoai.servicefunc.dao.intf;
 import cn.org.atool.fluent.mybatis.base.IBaseDao;
 import com.xiaomi.xiaoai.servicefunc.entity.TbMockEntity;
 import com.xiaomi.xiaoai.servicefunc.wrapper.TbMockQuery;
+import com.xiaomi.xiaoai.servicefunc.wrapper.TbMockUpdate;
+import org.apache.ibatis.annotations.Insert;
 
 import java.util.Date;
 
@@ -16,4 +18,6 @@ import java.util.Date;
 public interface TbMockDao extends IBaseDao<TbMockEntity> {
     TbMockQuery getHttpMocks(Integer[] ids, String name, String url,
                              String requestMethod, Date createdAt, Date updatedAt);
+
+    Boolean saveOrUpdateMock(TbMockEntity mockEntity);
 }

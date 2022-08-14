@@ -9,8 +9,11 @@ import cn.org.atool.fluent.mybatis.functions.TableSupplier;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.function.Consumer;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**
@@ -91,6 +94,12 @@ public class TbMockEntity extends RichEntity {
    */
   @TableField("reverse")
   private String reverse;
+
+  /**
+   * 状态码
+   */
+  @TableField("status")
+  private Integer status;
 
   /**
    * 更新时间
