@@ -15,4 +15,5 @@ public class Constant {
     private String POST;
     private String mockHost;
     private Integer mockPort;
+    private String mockMappingFilesLocation;
 }
