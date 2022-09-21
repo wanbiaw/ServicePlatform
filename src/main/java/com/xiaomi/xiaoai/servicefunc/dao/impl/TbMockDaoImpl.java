@@ -4,15 +4,10 @@ import cn.org.atool.fluent.mybatis.If;
 import com.xiaomi.xiaoai.servicefunc.dao.base.TbMockBaseDao;
 import com.xiaomi.xiaoai.servicefunc.dao.intf.TbMockDao;
 import com.xiaomi.xiaoai.servicefunc.entity.TbMockEntity;
-import com.xiaomi.xiaoai.servicefunc.mapper.TbDeviceMapper;
-import com.xiaomi.xiaoai.servicefunc.mapper.TbMockMapper;
 import com.xiaomi.xiaoai.servicefunc.wrapper.TbMockQuery;
-import com.xiaomi.xiaoai.servicefunc.wrapper.TbMockUpdate;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -45,7 +40,10 @@ public class TbMockDaoImpl extends TbMockBaseDao implements TbMockDao {
         return mapper.saveOrUpdate(mockEntity);
     }
 
-
+    @Override
+    public Integer delHttpMocks(Integer[] ids) {
+        return mapper.deleteByIds(Arrays.asList(ids));
+    }
 
 
 }

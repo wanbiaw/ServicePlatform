@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false" scan="false">
+
+    <!--设置存储路径变量-->
+    <property name="log.path" value="./logs"/>
+
+    <!--控制台输出appender-->
+    <appender name="console"
+              class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--设置输出格式-->
+            <pattern>
+                <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+                %d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) |%yellow(%thread)  %blue([%logger]) - %cyan(%msg%n)
+            </pattern>
+            <!--设置编码-->
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!--文件输出,时间窗口滚动-->
+    <appender name="fileRolling_info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--日志名,指定最新的文件名，其他文件名使用FileNamePattern -->
+        <File>${log.path}/timeFile/out.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--日志文件输出的文件名,可设置文件类型为gz,开启文件压缩-->
+            <fileNamePattern>${log.path}/timeFile/%d{yyyy-MM-dd}/info.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!--日志文件保留天数-->
+            <MaxHistory>20</MaxHistory>
+            <!--按大小分割同一天的-->
+            <TimeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>20MB</maxFileSize>
+            </TimeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <!--输出格式-->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n
+            </pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+<!--        设置filter 子节点，在默认级别INFO上再次过滤，配置 onMatch，onMismatch 可实现只输出单个级别-->
+<!--        <filter class="ch.qos.logback.classic.filter.LevelFilter">-->
+<!--            <level>INFO</level>-->
+<!--            &lt;!&ndash;接受匹配&ndash;&gt;-->
+<!--            <onMatch>ACCEPT</onMatch>-->
+<!--            <onMismatch>NEUTRAL</onMismatch>-->
+<!--        </filter>-->
+    </appender>
+
+    <!-- Log file error output -->
+    <appender name="fileRolling_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.path}/timeFile/%d{yyyy-MM-dd}/error.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>20MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n
+            </pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+    </appender>
+
+
+    <!-- 线上环境，日志配置仅有文件写入 -->
+    <springProfile name="prod">
+        <root level="info">
+            <!--日志输出到文件-->
+            <appender-ref ref="fileRolling_info"/>
+            <appender-ref ref="fileRolling_error"/>
+        </root>
+    </springProfile>
+
+    <!-- 本地、开发环境，日志配置 可以写logback支持的所有节点 -->
+    <springProfile name="dev">
+        <root level="info">
+<!--            日志输出到console-->
+            <appender-ref ref="console"/>
+            <!--日志输出到文件-->
+            <appender-ref ref="fileRolling_info"/>
+            <appender-ref ref="fileRolling_error"/>
+        </root>
+    </springProfile>
+
+    <!-- Framework level setting -->
+<!--    <include resource="config/logger-core.xml" />-->
+
+    <!-- Project level setting -->
+    <!-- <logger name="your.package" level="DEBUG" /> -->
+<!--    <logger name="org.springframework" level="INFO"></logger>-->
+<!--    <logger name="org.mybatis" level="INFO"></logger>-->
+</configuration>

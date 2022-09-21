@@ -84,6 +84,12 @@ public class MockServiceImpl implements MockService {
         WireMock.saveAllMappings();
     }
 
+    @Override
+    public void delHttpMocks(Integer[] ids) {
+        logger.info("delHttpMocks执行===================>");
+        tbMockDao.delHttpMocks(ids);
+    }
+
     /**
      * @Author wangxiang10
      * @Description  配置请求头和请求参数值

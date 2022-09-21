@@ -56,7 +56,7 @@ public class MockController {
     public ResponseResult deleteMock(
         @RequestBody Integer[] ids
     ){
-
-        return null;
+        mockService.delHttpMocks(ids);
+        return rr.responseResult(ErrorEnum.SUCCESS,true,"Mock删除成功！");
     }
 }
