@@ -48,7 +48,8 @@ public class MockServiceImpl implements MockService {
     public void saveHttpMocks(TbMockEntity mockEntity) {
         logger.info("saveHttpMocks()执行===================>");
         if (mockEntity.getUuid()!=null && mockEntity.getUuid().contains("-")){
-            File file = new File("D:\\aaa\\mappings");
+            File file = new File(constant.getMockMappingFilesLocation()+File.separator+"mappings");
+            logger.info("保存路径为=============》"+constant.getMockMappingFilesLocation()+File.separator+"mappings");
             File[] mappings = file.listFiles();
             List<File> existMapping = Arrays.stream(mappings).filter(p -> p.getAbsolutePath().contains(mockEntity.getUuid())).collect(Collectors.toList());
             if (existMapping.size()>0){
@@ -80,6 +81,8 @@ public class MockServiceImpl implements MockService {
         mockEntity.setUpdatedAt(new Date());
         mockEntity.setCreatedAt(
                 mockEntity.getCreatedAt() == null ?new Date():mockEntity.getCreatedAt());
+        mockEntity.setUrl(mockEntity.getUrl().contentEquals(constant.getMockHost()) ? mockEntity.getUrl() :
+                constant.getMockHost()+":"+constant.getMockPort()+mockEntity.getUrl());
         tbMockDao.saveOrUpdateMock(mockEntity);
         WireMock.saveAllMappings();
     }

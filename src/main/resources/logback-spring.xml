@@ -2,7 +2,7 @@
 <configuration debug="false" scan="false">
 
     <!--设置存储路径变量-->
-    <property name="log.path" value="./logs"/>
+    <property name="log.path" value="/opt/logs"/>
 
     <!--控制台输出appender-->
     <appender name="console"
