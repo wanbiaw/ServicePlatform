@@ -81,7 +81,7 @@ public class MockServiceImpl implements MockService {
         mockEntity.setUpdatedAt(new Date());
         mockEntity.setCreatedAt(
                 mockEntity.getCreatedAt() == null ?new Date():mockEntity.getCreatedAt());
-        mockEntity.setUrl(mockEntity.getUrl().contentEquals(constant.getMockHost()) ? mockEntity.getUrl() :
+        mockEntity.setUrl(mockEntity.getUrl().contains(constant.getMockHost()) ? mockEntity.getUrl() :
                 constant.getMockHost()+":"+constant.getMockPort()+mockEntity.getUrl());
         tbMockDao.saveOrUpdateMock(mockEntity);
         WireMock.saveAllMappings();
