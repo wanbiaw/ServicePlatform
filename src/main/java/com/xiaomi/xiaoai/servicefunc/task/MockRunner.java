@@ -12,6 +12,13 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
 import static com.github.tomakehurst.wiremock.core.WireMockApp.FILES_ROOT;
 import static com.github.tomakehurst.wiremock.core.WireMockApp.MAPPINGS_ROOT;
 import static java.lang.System.out;
@@ -55,6 +62,12 @@ public class MockRunner implements CommandLineRunner {
                         .port(constant.getMockPort())
                         .fileSource(new SingleRootFileSource(constant.getMockMappingFilesLocation()))
         );
+
+        File file = new File(constant.getMockMappingFilesLocation()+File.separator+"mappings");
+        List<File> mappings = Arrays.stream(Objects.requireNonNull(file.listFiles())).collect(Collectors.toList());
+        if (mappings.size()>0) {
+            mappings.forEach(File::delete);
+        }
 //        if (!options.recordMappingsEnabled()) {
 //            wireMockServer.enableRecordMappings(mappingsFileSource, filesFileSource);
 //        }

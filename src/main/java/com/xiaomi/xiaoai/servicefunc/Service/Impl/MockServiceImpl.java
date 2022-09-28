@@ -39,9 +39,11 @@ public class MockServiceImpl implements MockService {
             Integer[] Ids, String name, String url, String requestMethod,
             Date createdAt, Date updatedAt)
     {
-        TbMockQuery httpMocks =
-                tbMockDao.getHttpMocks(Ids, name, url, requestMethod, createdAt, updatedAt);
-        return tbMockDao.listEntity(httpMocks);
+
+        List<TbMockEntity> tbMockEntities = tbMockDao.listEntity(tbMockDao.getHttpMocks(Ids, name, url, requestMethod, createdAt, updatedAt));
+         tbMockEntities.forEach(s ->
+                s.setUrl(constant.getMockHost()+":"+constant.getMockPort()+s.getUrl()));
+        return tbMockEntities;
     }
 
     @Override
@@ -56,6 +58,10 @@ public class MockServiceImpl implements MockService {
                 existMapping.get(0).delete();
             }
         }
+
+        //将url中的ip:port去除，存根不能有这些信息
+        mockEntity.setUrl(mockEntity.getUrl().substring(mockEntity.getUrl().indexOf("/")));
+
         configureFor(constant.getMockHost(),constant.getMockPort());
         StubMapping stubMapping;
         MappingBuilder mappingBuilder;
@@ -81,8 +87,6 @@ public class MockServiceImpl implements MockService {
         mockEntity.setUpdatedAt(new Date());
         mockEntity.setCreatedAt(
                 mockEntity.getCreatedAt() == null ?new Date():mockEntity.getCreatedAt());
-        mockEntity.setUrl(mockEntity.getUrl().contains(constant.getMockHost()) ? mockEntity.getUrl() :
-                constant.getMockHost()+":"+constant.getMockPort()+mockEntity.getUrl());
         tbMockDao.saveOrUpdateMock(mockEntity);
         WireMock.saveAllMappings();
     }
